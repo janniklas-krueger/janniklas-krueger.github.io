@@ -1,0 +1,39 @@
+* {
+  font-size: 18px;
+  font-family: sans-serif;
+}
+
+body {
+  margin: 0;
+  background-color: #ffffa0;
+}
+
+#wrapper {
+  max-width: 1000px;
+  margin: auto;
+  background-color: #ffffff;
+  padding: 1em;
+  margin-top: 1em; 
+}
+
+a {
+  text-decoration: none;
+  color: blue;
+}
+
+a:hover {
+  color: silver;
+}
+
+h1 {
+  font-size: 2em;
+  margin-bottom: 0;
+}
+
+#h1-hr {
+  margin-bottom: 1.5em;
+}
+
+h2 {
+  font-size: 1.25em;
+}
