@@ -1,8 +1,4 @@
-<<<<<<< HEAD
 # Main
-=======
-# README Main
->>>>>>> 63e47c52502feb5f629a902fbc2792420615dde1
 [Webseite](https://janniklas-krueger.github.io)
 
 Ein C#-Beispiel:
