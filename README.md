@@ -1,4 +1,4 @@
-# Hallo Welt
+# Main
 [Webseite](https://janniklas-krueger.github.io)
 
 Ein C#-Beispiel:
