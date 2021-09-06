@@ -30,6 +30,10 @@ h1 {
   margin-bottom: 0;
 }
 
+h1:hover {
+    cursor: pointer;
+}
+
 #h1-hr {
   margin-bottom: 1.5em;
 }
