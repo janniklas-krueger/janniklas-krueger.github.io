@@ -5,7 +5,8 @@
 
 body {
   margin: 0;
-  background-color: #ffffa0;
+  background-color: orange;
+  transition: background 0.9s;
 }
 
 #wrapper {
@@ -13,7 +14,8 @@ body {
   margin: auto;
   background-color: #ffffff;
   padding: 1em;
-  margin-top: 1em; 
+  margin-top: 1em;
+  border-radius: 30px;
 }
 
 a {
