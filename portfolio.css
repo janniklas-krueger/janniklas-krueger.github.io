@@ -10,10 +10,9 @@ body {
 
 #wrapper {
   max-width: 1000px;
-  margin: auto;
+  margin: 1em auto;
   background-color: #ffffff;
   padding: 1em;
-  margin-top: 1em; 
 }
 
 a {
@@ -40,4 +39,8 @@ h1:hover {
 
 h2 {
   font-size: 1.25em;
+}
+
+form * {
+  margin-bottom: 5px;
 }
