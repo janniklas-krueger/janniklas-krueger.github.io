@@ -5,17 +5,14 @@
 
 body {
   margin: 0;
-  background-color: orange;
-  transition: background 0.9s;
+  background-color: #ffffa0;
 }
 
 #wrapper {
   max-width: 1000px;
-  margin: auto;
+  margin: 1em auto;
   background-color: #ffffff;
   padding: 1em;
-  margin-top: 1em;
-  border-radius: 30px;
 }
 
 a {
@@ -42,4 +39,8 @@ h1:hover {
 
 h2 {
   font-size: 1.25em;
+}
+
+form * {
+  margin-bottom: 5px;
 }
