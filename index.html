@@ -17,7 +17,31 @@
 			<h2> Hallo Welt</h2>
 			<p>Diese Webseite wurde zu Testzwecken erstellt</p>
 			<a href="https://github.com/janniklas-krueger/janniklas-krueger.github.io">Zur&uuml;ck zum Repository</a>
-			<h2>And now for something completely different:</h2>
+
+			<h3>Formular</h3>
+			<form id="form">
+				<label for="id">ID:</label><br />
+				<input type="text" id="id" name="id"><br />
+
+				<label for="name">Name:</label><br />
+				<input type="text" id="name" name="name"><br />
+
+				<label for="status">Status:</label><br />
+				<select id="status" name="status">
+					<option value="available">verf&uuml;gbar</option>
+					<option value="pending">laufend</option>
+					<option value="sold">verkauft</option>
+				</select><br />
+
+				<label for="cat_id">Kategorie-ID:</label><br />
+				<input type="text" id="cat_id" name="cat_id"><br />
+
+				<label for="category">Kategorie:</label><br />
+				<input type="text" id="category" name="category"><br />
+				<button type="submit" name="submit">Best&auml;tigen</button>
+			</form>
+
+			<h3>And now for something completely different:</h3>
 			<blockquote id="quote">
 				<p>
 					<i>People assume that time is a straight progression of cause to effect,<br />
