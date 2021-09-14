@@ -41,6 +41,70 @@ h2 {
   font-size: 1.25em;
 }
 
+form {
+  position: relative;
+}
+
 form * {
   margin-bottom: 5px;
+}
+
+#email, #avatar {
+  width: 20em;
+}
+
+#avatar_img {
+  position: absolute;
+  width: 128px;
+  left: 25em;
+  top: 0;
+  margin: 0;
+}
+
+button:hover {
+  cursor: pointer;
+}
+
+#send_button, #confirm_no {
+  background-color: lightgrey;
+  border-color: lightgrey;
+}
+
+#delete_button, #confirm_yes {
+  background-color: red;
+  border-color: red;
+}
+
+#delete_button_inactive {
+  visibility: hidden;
+}
+
+/* Tabelle */
+
+#persontabelle {
+  border-collapse: collapse;
+}
+
+#persontabelle thead {
+  text-align: center;
+}
+
+#persontabelle * {
+  border: solid 2px;
+  padding: 0.5em;
+}
+
+#persontabelle img {
+  border: 0;
+  padding: 0;
+  width: 64px;
+}
+
+#persontabelle tbody tr {
+  cursor: pointer;
+}
+
+#select {
+  background-color: blue;
+  color: white;
 }
