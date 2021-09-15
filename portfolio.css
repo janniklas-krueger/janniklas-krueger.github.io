@@ -75,10 +75,6 @@ button:hover {
   border-color: red;
 }
 
-#delete_button_inactive {
-  visibility: hidden;
-}
-
 /* Tabelle */
 
 #persontabelle {
@@ -97,7 +93,7 @@ button:hover {
 #persontabelle img {
   border: 0;
   padding: 0;
-  width: 64px;
+  height: 64px;
 }
 
 #persontabelle tbody tr {
