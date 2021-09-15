@@ -20,7 +20,18 @@ var formTitel = document.getElementById('formTitel');           // H3 über Form
 var felder = document.getElementsByClassName('field');          // Formularfelder
 
 var sendButton = document.getElementById('send_button');
-var deleteButton = document.getElementById('delete_button_inactive');
+var deleteButton = document.getElementById('delete_button');
+
+// Bestätigungsdialog
+var deleteConfirmText = document.getElementById('delete_confirm_text');
+var deleteConfirmYes = document.getElementById('confirm_yes');
+var deleteConfirmNo = document.getElementById('confirm_no');
+
+deleteButton.style.visibility = "hidden";
+deleteConfirmText.style.display = "none";
+deleteConfirmYes.style.display = "none";
+deleteConfirmNo.style.display = "none";
+
 
 // Bearbeiten oder Erstellen
 var bearbeiten = false;
@@ -38,6 +49,7 @@ for (var i = 0; i < spaltenAnzahl; i++)
 zeile += "</tr>";
 
 
+// Daten anfordern
 fetch("https://reqres.in/api/users?page=1", {method: "GET"})
 .then
 ((response) =>
@@ -122,7 +134,7 @@ function clickTabellenItem()
 
         formTitel.innerHTML = "Neue Person hinzufügen";
 
-        deleteButton.id = "delete_button_inactive";
+        deleteButton.style.visibility = "hidden";
         sendButton.innerHTML = "Erstellen";
 
         personForm.id.disabled = false;
@@ -147,7 +159,7 @@ function clickTabellenItem()
 
     formTitel.innerHTML = "Markierte Person ändern";
 
-    deleteButton.id = "delete_button";
+    deleteButton.style.visibility = "visible";
     sendButton.innerHTML = "Ändern";
 
     personForm.id.disabled = true;
@@ -179,7 +191,7 @@ function clickTabellenItem()
 }
 
 
-///// Formular /////
+////////// Formular //////////
 
 // Bild im Formular aktualisieren
 personForm.avatar.onchange = function()
@@ -187,13 +199,13 @@ personForm.avatar.onchange = function()
     personForm.avatar_img.src = this.value;
 }
 
-// Button "Erstellen / Ändern"
-personForm.onsubmit = function (event)
+///// Button "Erstellen / Ändern" /////
+sendButton.onclick = function ()
 {
     // Person ausgewählt?
     if (bearbeiten)
     {
-        // Bestehende Person bearbeiten:
+        // Bestehende Person bearbeiten
         var update = {};
 
         if (personForm.email.value != altdaten.email && personForm.email.value != "")
@@ -213,6 +225,7 @@ personForm.onsubmit = function (event)
             update.avatar = personForm.avatar.value;
         }
 
+        // Änderungen übernehmen
         fetch("https://reqres.in/api/users/" + personForm.id.value,
         {
             body: JSON.stringify(update),
@@ -223,8 +236,13 @@ personForm.onsubmit = function (event)
         {
             if (response.ok)
             {
-                alert("Person bearbeitet");
                 console.log(JSON.stringify(update));
+                alert("Person bearbeitet");
+                for (var i = 0; i < felder.length; i++)
+                {
+                    felder[i].value = "";
+                }
+                location.reload();
             }
             else
             {
@@ -235,8 +253,7 @@ personForm.onsubmit = function (event)
         {
             alert("Person konnte nicht bearbeitet werden.\nGrund:\n" + reason);
         });
-        event.preventDefault();
-        return false;
+        return;
     }
 
     ///// Neue Person anlegen /////
@@ -255,6 +272,7 @@ personForm.onsubmit = function (event)
     person.last_name = personForm.last_name.value;
     person.avatar = personForm.avatar.value;
 
+    // Persondaten senden
     fetch("https://reqres.in/api/users",
     {
         body: JSON.stringify(person),
@@ -265,8 +283,13 @@ personForm.onsubmit = function (event)
     {
         if (response.ok)
         {
-            alert("Person erstellt!");
             console.log(JSON.stringify(person));
+            alert("Person erstellt!");
+            for (var i = 0; i < felder.length; i++)
+            {
+                felder[i].value = "";
+            }
+            location.reload();
         }
         else
         {
@@ -277,12 +300,19 @@ personForm.onsubmit = function (event)
     {
         alert("Person konnte nicht erstellt werden.\nGrund:\n" + reason);
     });
-    event.preventDefault();
 }
 
 
-// Button "Löschen"
+///// Button "Löschen" /////
 deleteButton.onclick = function ()
+{
+    // "Wirklich löschen" anzeigen:
+    deleteConfirmText.style.display = "block";
+    deleteConfirmYes.style.display = "inline";
+    deleteConfirmNo.style.display = "inline";
+};
+
+deleteConfirmYes.onclick = function()
 {
     fetch("https://reqres.in/api/users/" + personForm.id.value,
     {
@@ -309,52 +339,11 @@ deleteButton.onclick = function ()
     {
         alert("Person konnte nicht gelöscht werden.\nGrund:\n" + reason);
     });
+}
 
-
-    /*personForm.innerHTML += "<p class='delete_confirm'>Wirklich löschen?</p> <button class='delete_confirm' id='confirm_yes' type='button'>Ja</button> <button class='delete_confirm' id='confirm_no' type='button'>Nein</button>";
-    var deleteConfirm = personForm.getElementsByClassName('delete_confirm');
-
-    var deleteConfirmYes = document.getElementById('confirm_yes');
-    var deleteConfirmNo = document.getElementById('confirm_no');
-
-    deleteConfirmYes.onclick = function ()
-    {
-        fetch("https://reqres.in/api/users/" + personForm.id.value,
-        {
-            method: "DELETE"
-        })
-        .then
-        ((response) =>
-        {
-            if (response.ok)
-            {
-                alert(response.status + "\nPerson gelöscht");
-                deleteButton = document.getElementById('delete_button');
-            }
-            else
-            {
-                alert(response.status + "\nPerson konnte nicht gelöscht werden.");
-                deleteButton = document.getElementById('delete_button');
-            }
-        },
-        (reason) =>
-        {
-            alert("Person konnte nicht gelöscht werden.\nGrund:\n" + reason);
-            deleteButton = document.getElementById('delete_button');
-        });
-
-        for (var i = deleteConfirm.length - 1; i >= 0; i--)
-        {
-            deleteConfirm[i].remove();
-        }
-    };
-
-    deleteConfirmNo.onclick = function ()
-    {
-        for (var i = deleteConfirm.length - 1; i >= 0; i--)
-        {
-            deleteConfirm[i].remove();
-        }
-        deleteButton = document.getElementById('delete_button');
-    };*/
-};
+deleteConfirmNo.onclick = function()
+{
+    deleteConfirmText.style.display = "none";
+    deleteConfirmYes.style.display = "none";
+    deleteConfirmNo.style.display = "none";
+}
