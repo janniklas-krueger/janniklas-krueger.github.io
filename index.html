@@ -1,58 +1,61 @@
 <!DOCTYPE html>
+<html lang="de">
 <html>
-	<head>
-		<title>Hallo Welt</title>
-		<link href="portfolio.css" type="text/css" rel="stylesheet">
-		<meta charset="UTF-8">
-	</head>
+<head>
+	<title>Hallo Welt</title>
+	<link href="portfolio.css" type="text/css" rel="stylesheet">
+	<meta charset="UTF-8">
+</head>
 
-	<body>
-	<div id="wrapper">
-		<header>
-			<h1>Hallo Welt</h1>
-			<hr id="h1-hr"/>
-		</header>
+<body>
+<div id="wrapper">
+	<header>
+		<h1>Hallo Welt</h1>
+		<hr id="h1-hr"/>
+	</header>
 
-		<main>
-			<h2> Hallo Welt</h2>
-			<p>Diese Webseite wurde zu Testzwecken erstellt</p>
-			<a href="https://github.com/janniklas-krueger/janniklas-krueger.github.io">Zur&uuml;ck zum Repository</a>
+	<nav><a href="person_form.html">Personen</a></nav>
 
-			<h3>Formular</h3>
-			<form id="form">
-				<label for="id">ID:</label><br />
-				<input type="text" id="id" name="id"><br />
+	<main>
+		<h2>Hallo Welt</h2>
+		<p>Diese Webseite wurde zu Testzwecken erstellt</p>
+		<a href="https://github.com/janniklas-krueger/janniklas-krueger.github.io">Zur&uuml;ck zum Repository</a>
 
-				<label for="name">Name:</label><br />
-				<input type="text" id="name" name="name"><br />
+		<h3>Formular</h3>
+		<form id="form">
+			<label for="id">ID:</label><br />
+			<input type="text" id="id" name="id"><br />
 
-				<label for="status">Status:</label><br />
-				<select id="status" name="status">
-					<option value="available">verf&uuml;gbar</option>
-					<option value="pending">laufend</option>
-					<option value="sold">verkauft</option>
-				</select><br />
+			<label for="name">Name:</label><br />
+			<input type="text" id="name" name="name"><br />
 
-				<label for="cat_id">Kategorie-ID:</label><br />
-				<input type="text" id="cat_id" name="cat_id"><br />
+			<label for="status">Status:</label><br />
+			<select id="status" name="status">
+				<option value="available">verf&uuml;gbar</option>
+				<option value="pending">laufend</option>
+				<option value="sold">verkauft</option>
+			</select><br />
 
-				<label for="category">Kategorie:</label><br />
-				<input type="text" id="category" name="category"><br />
-				<button type="submit" name="submit">Best&auml;tigen</button>
-			</form>
+			<label for="cat_id">Kategorie-ID:</label><br />
+			<input type="text" id="cat_id" name="cat_id"><br />
 
-			<h3>And now for something completely different:</h3>
-			<blockquote id="quote">
-				<p>
-					<i>People assume that time is a straight progression of cause to effect,<br />
-					while actually from a non-linear, non-subjective viewpoint<br />
-					it's more like a big ball of wibbly-wobbly, timey-wimey stuff. </i>
-				</p>
-				<span id="doctor"> - <b>Der</b> Doktor</span>
-			</blockquote>
-		</main>
-	</div>
-	<script src="script.js"></script>
-	<script src="events.js"></script>
-	</body>
+			<label for="category">Kategorie:</label><br />
+			<input type="text" id="category" name="category"><br />
+			<button type="submit" name="submit">Best&auml;tigen</button>
+		</form>
+
+		<h3>And now for something completely different:</h3>
+		<blockquote id="quote">
+			<p>
+				<i>People assume that time is a straight progression of cause to effect,<br />
+				while actually from a non-linear, non-subjective viewpoint<br />
+				it's more like a big ball of wibbly-wobbly, timey-wimey stuff. </i>
+			</p>
+			<span id="doctor"> - <b>Der</b> Doktor</span>
+		</blockquote>
+	</main>
+</div>
+<script src="script.js"></script>
+<script src="events.js"></script>
+</body>
 </html>
