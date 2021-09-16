@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <link href="portfolio.css" type="text/css" rel="stylesheet">
+    <title>Hallo Welt</title>
+</head>
+<body>
+<div id="wrapper">
+    <header>
+        <h1>Hallo Welt</h1>
+        <hr id="h1-hr"/>
+    </header>
+
+    <nav>
+        <a href="index.html">Start</a> <br />
+        <a href="person_form.html">Personen</a>
+    </nav>
+
+    <main>
+    <section id="person">
+        <h2>Personen</h2>
+        <p>Zum Ändern oder Löschen der Personen einen Datensatz anklicken:</p>
+        <table>
+            <thead>
+            <tr>
+                <td>ID</td>
+                <td>Email</td>
+                <td>Vorname</td>
+                <td>Nachname</td>
+                <td>Avatar-URI</td>
+            </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+        <p>Personendaten werden geladen...</p>
+
+        <h3>Neue Person hinzuf&uuml;gen</h3>
+        <form id="form">
+            <label>ID:</label><br />
+            <input type="text" v-model="id"><br />
+
+            <label>Email:</label><br />
+            <input type="text" v-model="email"><br />
+
+            <label>Vorname:</label><br />
+            <input type="text" v-model="firstName"><br />
+
+            <label>Nachname:</label><br />
+            <input type="text" v-model="lastName"><br />
+
+            <label>*Avatar-URI:</label><br />
+            <input type="text" v-model="avatar"><br />
+            <img src="" />
+
+            <button type="button" v-on:click="logData">Erstellen</button>
+            <button type="button">Löschen</button>
+
+            <p>Wirklich löschen?</p>
+            <button type="button">Ja</button>
+            <button type="button">Nein</button>
+        </form>
+    </section>
+    </main>
+</div>
+<script src="https://unpkg.com/vue"></script>
+<script src="vuejs_person_form.js"></script>
+</body>
+</html>
