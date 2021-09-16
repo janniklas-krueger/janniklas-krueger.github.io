@@ -19,7 +19,7 @@
         <p>Zum Ändern oder Löschen der Personen einen Datensatz anklicken:</p>
         <table id="persontabelle">
             <thead>
-                <tr id="persontabelle_headrow">
+                <tr id="person-tablehead-row">
                     <td data-fieldtype="id">ID</td>
                     <td data-fieldtype="email">Email</td>
                     <td data-fieldtype="first_name">Vorname</td>
@@ -27,11 +27,15 @@
                     <td data-fieldtype="avatar">Avatar-URI</td>
                 </tr>
             </thead>
-            <tbody id="persontabelle_body">
+            <tbody id="person-tablebody">
             </tbody>
         </table>
-        <p id="info">Personendaten werden geladen...</p>
-        <h3 id="formTitel">Neue Person hinzuf&uuml;gen</h3>
+        <p id="load-info">Personendaten werden geladen...</p>
+        <button id="last-page" class="std-button" type="button">Vorherige Seite</button>
+        <button id="next-page" class="std-button" type="button">Nächste Seite</button>
+
+
+        <h3 id="form-title">Neue Person hinzuf&uuml;gen</h3>
         <form id="personform">
             <label for="id">ID:</label><br />
             <input type="text" id="id" class="field"><br />
@@ -49,12 +53,12 @@
             <input type="text" id="avatar" class="field"><br />
             <img src="" id="avatar_img"/>
 
-            <button id="send_button" type="button">Erstellen</button>
-            <button id="delete_button" type="button">Löschen</button>
+            <button id="send-button" class="std-button" type="button">Erstellen</button>
+            <button id="delete-button" type="button">Löschen</button>
 
-            <p id="delete_confirm_text">Wirklich löschen?</p>
-            <button id="confirm_yes" type="button">Ja</button>
-            <button id="confirm_no" type="button">Nein</button>
+            <p id="pers-delete-text">Wirklich löschen?</p>
+            <button id="pers-delete-yes" type="button">Ja</button>
+            <button id="pers-delete-no" class="std-button" type="button">Nein</button>
         </form>
     </main>
 </div>
