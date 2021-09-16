@@ -24,8 +24,13 @@ var deleteButton = document.getElementById('delete-button');
 
 // Durch Tabellenseiten blättern
 var nextPage = document.getElementById('next-page');
-var lastPage = document.getElementById('last-page');
-var currentpage = 1;
+var priorPage = document.getElementById('prior-page');
+priorPage.style.visibility = "hidden";
+
+var currentPage = 1;
+const minPageIndex = 1;
+var maxPageIndex;
+const maxEntries = 6;
 
 
 // Bestätigungsdialog
@@ -56,7 +61,7 @@ zeile += "</tr>";
 
 
 // Daten anfordern
-fetch("https://reqres.in/api/users?page=" + currentpage, {method: "GET"})
+fetch("https://reqres.in/api/users?page=" + minPageIndex, {method: "GET"})
 .then
 ((response) =>
 {
@@ -116,15 +121,18 @@ function fillTable(item, i)
 }
 
 
-///// Durch Seiten Blättern
+///// Durch Seiten Blättern /////
 
 nextPage.onclick = function()
 {
-    personTBody.innerHTML = "";
     loadInfo.style.display = "block";
-    currentpage++;
+    currentPage++;
+    if (currentPage === maxPageIndex)
+    {
+        nextPage.style.visibility = "hidden";
+    }
 
-    fetch("https://reqres.in/api/users?page=" + currentpage, {method: "GET"})
+    fetch("https://reqres.in/api/users?page=" + currentPage, {method: "GET"})
     .then
     ((response) =>
     {
@@ -134,20 +142,28 @@ nextPage.onclick = function()
             .then
             ((jsonResp) =>
             {
-                console.log(jsonResp.data);
                 if (jsonResp.data.length !== 0)
                 {
-                    // Infotext löschen, Daten einfügen:
+                    // Daten einfügen, Infotext löschen
+                    personTBody.innerHTML = "";
                     jsonResp.data.forEach((item, index) => {fillTable(item, index);});
                     loadInfo.style.display = "none";
+                    priorPage.style.visibility = "visible";
                     dataSelection();
+
+                    if (jsonResp.data.length < maxEntries)
+                    {
+                        nextPage.style.visibility = "hidden";
+                        maxPageIndex = currentPage;
+                    }
                 }
                 else
                 {
-                    lastPage.click();
-                    nextPage.style.display = "none";
+                    currentPage--;
+                    maxPageIndex = currentPage;
+                    loadInfo.style.display = "none";
+                    nextPage.style.visibility = "hidden";
                 }
-
             });
         }
         else
@@ -163,13 +179,16 @@ nextPage.onclick = function()
     });
 }
 
-lastPage.onclick = function()
+priorPage.onclick = function()
 {
-    personTBody.innerHTML = "";
     loadInfo.style.display = "block";
-    currentpage--;
+    currentPage--;
+    if (currentPage === minPageIndex)
+    {
+        priorPage.style.visibility = "hidden";
+    }
 
-    fetch("https://reqres.in/api/users?page=" + currentpage, {method: "GET"})
+    fetch("https://reqres.in/api/users?page=" + currentPage, {method: "GET"})
     .then
     ((response) =>
     {
@@ -180,8 +199,10 @@ lastPage.onclick = function()
             ((jsonResp) =>
             {
                 // Infotext löschen, Daten einfügen:
+                personTBody.innerHTML = "";
                 jsonResp.data.forEach((item, index) => {fillTable(item, index);});
                 loadInfo.style.display = "none";
+                nextPage.style.visibility = "visible";
                 dataSelection();
             });
         }
@@ -208,6 +229,10 @@ function dataSelection()
     for (var i = 0; i < personTItems.length; i++)
     {
         personTItems[i].onclick = clickTabellenItem;
+        if (personTItems[i].dataset.personId == personform.id.value)
+        {
+            personTItems[i].className = "select";
+        }
     }
 };
 
@@ -437,4 +462,12 @@ persDeleteNo.onclick = function()
     persDeleteText.style.display = "none";
     persDeleteYes.style.display = "none";
     persDeleteNo.style.display = "none";
+}
+
+
+window.onbeforeunload = function()
+{
+    for (var i = 0; i < fields.length; i++) {
+      fields[i].value = "";
+    }
 }
