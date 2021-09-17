@@ -46,7 +46,7 @@ form {
 }
 
 form * {
-  margin-bottom: 5px;
+  margin-bottom: 0.25em;
 }
 
 #email, #avatar {
@@ -65,12 +65,12 @@ button:hover {
   cursor: pointer;
 }
 
-#send_button, #confirm_no {
+.std-button {
   background-color: lightgrey;
   border-color: lightgrey;
 }
 
-#delete_button, #confirm_yes {
+#delete-button, #pers-delete-yes {
   background-color: red;
   border-color: red;
 }
@@ -79,6 +79,7 @@ button:hover {
 
 #persontabelle {
   border-collapse: collapse;
+  margin-bottom: 0.25em;
 }
 
 #persontabelle thead {
@@ -100,7 +101,7 @@ button:hover {
   cursor: pointer;
 }
 
-#select {
+.select {
   background-color: blue;
   color: white;
 }
