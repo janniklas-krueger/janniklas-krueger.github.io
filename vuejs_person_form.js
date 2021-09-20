@@ -130,15 +130,15 @@ x = new Vue({
     clickItem: function(event)
     {
       var item = event.target.parentElement;
-      console.log(event.target.parentElement);
-      if (item.className === "select")
+      console.log(item);
+      /*if (item.className === "select")
       {
         this.change = false;
         item.className = "";
         this.formLable = "Neue Person hinzufügen";
         this.formSubmit = "Erstellen";
 
-      }
+      }*/
     },
 
   },
