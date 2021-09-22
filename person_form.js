@@ -55,7 +55,7 @@ var zeile = "<tr data-person-id=''>";
 
 for (var i = 0; i < spaltenAnzahl; i++)
 {
-    zeile += "<td data-fieldtype='" + personTHead.children[i].dataset.fieldtype + "'></td>";
+    zeile += "<td data-fieldname='" + personTHead.children[i].dataset.fieldname + "'></td>";
 }
 zeile += "</tr>";
 
@@ -94,29 +94,29 @@ function fillTable(item, i)
     personTBody.innerHTML += zeile;
     personTBody.children[i].dataset.personId = item.id;
 
-    if (personTBody.children[i].querySelector("td[data-fieldtype = 'id']") != null)
+    if (personTBody.children[i].querySelector("td[data-fieldname = 'id']") != null)
     {
-        personTBody.children[i].querySelector("td[data-fieldtype = 'id']").innerHTML = item.id;
+        personTBody.children[i].querySelector("td[data-fieldname = 'id']").innerHTML = item.id;
     }
 
-    if (personTBody.children[i].querySelector("td[data-fieldtype = 'email']") != null)
+    if (personTBody.children[i].querySelector("td[data-fieldname = 'email']") != null)
     {
-        personTBody.children[i].querySelector("td[data-fieldtype = 'email']").innerHTML = item.email;
+        personTBody.children[i].querySelector("td[data-fieldname = 'email']").innerHTML = item.email;
     }
 
-    if (personTBody.children[i].querySelector("td[data-fieldtype = 'first_name']") != null)
+    if (personTBody.children[i].querySelector("td[data-fieldname = 'first_name']") != null)
     {
-        personTBody.children[i].querySelector("td[data-fieldtype = 'first_name']").innerHTML = item.first_name;
+        personTBody.children[i].querySelector("td[data-fieldname = 'first_name']").innerHTML = item.first_name;
     }
 
-    if (personTBody.children[i].querySelector("td[data-fieldtype = 'last_name']") != null)
+    if (personTBody.children[i].querySelector("td[data-fieldname = 'last_name']") != null)
     {
-        personTBody.children[i].querySelector("td[data-fieldtype = 'last_name']").innerHTML = item.last_name;
+        personTBody.children[i].querySelector("td[data-fieldname = 'last_name']").innerHTML = item.last_name;
     }
 
-    if (personTBody.children[i].querySelector("td[data-fieldtype = 'avatar']") != null)
+    if (personTBody.children[i].querySelector("td[data-fieldname = 'avatar']") != null)
     {
-        personTBody.children[i].querySelector("td[data-fieldtype = 'avatar']").innerHTML = "<img src='" + item.avatar + "' />";
+        personTBody.children[i].querySelector("td[data-fieldname = 'avatar']").innerHTML = "<img src='" + item.avatar + "' />";
     }
 }
 
