@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <link href="portfolio.css" type="text/css" rel="stylesheet">
     <title>Hallo Welt</title>
+    <script src="https://unpkg.com/vue"></script>
 </head>
 <body>
 <div id="wrapper">
@@ -23,49 +24,60 @@
         <p>Zum Ändern oder Löschen der Personen einen Datensatz anklicken:</p>
         <table id="person-table">
             <thead>
-            <tr id="person-theadline" ref="person_theadline">
-                <td data-fieldname="id">ID</td>
-                <td data-fieldname="email">Email</td>
-                <td data-fieldname="first_name">Vorname</td>
-                <td data-fieldname="last_name">Nachname</td>
-                <td data-fieldname="avatar">Avatar-URI</td>
+            <tr ref="theadline">
+                <td>ID</td>
+                <td>Email</td>
+                <td>Vorname</td>
+                <td>Nachname</td>
+                <td>Avatar</td>
             </tr>
             </thead>
-            <tbody id="person-tbody" ref="person_tbody">
+            <tbody ref="tbody">
+            <tr v-for="person in persons" :key="person.id" :data-person-id="person.id" :class="person.select" @click="clickPerson">
+                <td>{{person.id}}</td>
+                <td>{{person.email}}</td>
+                <td>{{person.firstName}}</td>
+                <td>{{person.lastName}}</td>
+                <td><img :src="person.avatar"/></td>
+            </tr>
             </tbody>
         </table>
-        <p v-if="ladeInfo">Personendaten werden geladen...</p>
+        <p v-if="loadInfo">Personendaten werden geladen...</p>
+        <div class="tpages">
+            <button class="std-button" type="button" @click="priorPage" :disabled="cFirstPage">Vorherige Seite</button>
+            <button class="std-button" type="button" @click="nextPage" :disabled="cLastPage">Nächste Seite</button>
+        </div>
 
-        <h3>{{formLable}}</h3>
+        <h3>{{formTitle}}</h3>
         <form id="form">
             <label>ID:</label><br />
-            <input type="text" v-model="person.id"><br />
+            <input type="text" v-model="formData.id" :disabled="disableId"><br />
 
             <label>Email:</label><br />
-            <input type="text" v-model="person.email"><br />
+            <input type="text" v-model="formData.email" class="email"><br />
 
             <label>Vorname:</label><br />
-            <input type="text" v-model="person.firstName"><br />
+            <input type="text" v-model="formData.firstName"><br />
 
             <label>Nachname:</label><br />
-            <input type="text" v-model="person.lastName"><br />
+            <input type="text" v-model="formData.lastName"><br />
 
             <label>*Avatar-URI:</label><br />
-            <input type="text" v-model="person.avatar"><br />
-            <img src="" />
+            <input type="text" v-model="formData.avatar" class="avatar"><br />
+            <img v-bind:src="formData.avatar" class="avatar_img"/>
 
-            <button type="button" v-on:click="sendData">{{formSubmit}}</button>
-            <button type="button" v-if="change">Löschen</button>
-            <p></p>
+            <button class="std-button" type="button" v-on:click="sendData">{{formSubmit}}</button>
+            <button class="warn-button" type="button" @click="deleteDlg = true" v-if="edit">Löschen</button>
 
-            <p>Wirklich löschen?</p>
-            <button type="button">Ja</button>
-            <button type="button">Nein</button>
+            <div v-if="deleteDlg">
+                <p>Wirklich löschen?</p>
+                <button class="warn-button" type="button" @click="deleteData">Ja</button>
+                <button class="std-button" type="button" @click="deleteDlg = false">Nein</button>
+            </div>
         </form>
     </section>
     </main>
 </div>
-<script src="https://unpkg.com/vue"></script>
 <script src="vuejs_person_form.js"></script>
 </body>
 </html>

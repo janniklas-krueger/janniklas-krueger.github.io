@@ -49,11 +49,11 @@ form * {
   margin-bottom: 0.25em;
 }
 
-#email, #avatar {
+.email, .avatar {
   width: 20em;
 }
 
-#avatar_img {
+#avatar_img, .avatar_img {
   position: absolute;
   width: 128px;
   left: 25em;
@@ -70,34 +70,34 @@ button:hover {
   border-color: lightgrey;
 }
 
-#delete-button, #pers-delete-yes {
+#delete-button, #pers-delete-yes, .warn-button {
   background-color: red;
   border-color: red;
 }
 
 /* Tabelle */
 
-#persontabelle {
+#person-table {
   border-collapse: collapse;
   margin-bottom: 0.25em;
 }
 
-#persontabelle thead {
+#person-table thead {
   text-align: center;
 }
 
-#persontabelle * {
+#person-table * {
   border: solid 2px;
   padding: 0.5em;
 }
 
-#persontabelle img {
+#person-table img {
   border: 0;
   padding: 0;
-  height: 64px;
+  width: 64px;
 }
 
-#persontabelle tbody tr {
+#person-table tbody tr {
   cursor: pointer;
 }
 

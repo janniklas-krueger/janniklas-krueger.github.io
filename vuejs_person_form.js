@@ -3,31 +3,103 @@ x = new Vue({
 
   data:
   {
-    /*person: function Person(id, email, first_name, last_name, avatar)
-    {
-      this.id = id;
-      this.email = email;
-      this.first_name = first_name;
-      this.last_name = last_name;
-      this.avatar = avatar;
-    }*/
+    oldData: {id: '', email: '', firstName: '', lastName: '', avatar: ''},
+    formData: {id: '', email: '', firstName: '', lastName: '', avatar: ''},
 
+    persons: [],
 
-    person: {id: '', email: '', firstName: '', lastName: '', avatar: ''},
-    formLable: 'Neue Person hinzufügen',
+    formTitle: 'Neue Person hinzufuegen',
     formSubmit: 'Erstellen',
 
-    ladeInfo: true,
-    change: false,
+    loadInfo: true,
+    edit: false,
+    disableId: false,
+
+    deleteDlg: false,
+
+    currentPage: 1,
+    firstPage: 1,
+    lastPage: '',
+
   },
 
   methods:
   {
-    sendData: function()
+    deleteData: function() // DELETE-Request
     {
+      fetch("https://reqres.in/api/users/" + this.formData.id, {method: "DELETE"})
+      .then
+      ((response) =>
+      {
+        if (response.ok)
+        {
+          alert(response.status + "\nPerson gelöscht");
+          location.reload();
+        }
+        else
+        {
+          alert(response.status + "\nPerson konnte nicht gelöscht werden.");
+        }
+      },
+      (reason) =>
+      {
+        alert("Person konnte nicht gelöscht werden.\nGrund:\n" + reason);
+      });
+    },
+
+    sendData: function() // PATCH- / POST-Request
+    {
+      // Check if editing is enabled
+      if (this.edit)
+      {
+        // If TRUE -> Insert edits into update
+        var update = {};
+
+        if (this.formData.email != "" && this.formData.email != this.oldData.email)
+        {
+          update.email = this.formData.email;
+        }
+        if (this.formData.firstName != "" && this.formData.firstName != this.oldData.firstName)
+        {
+          update.firstName = this.formData.firstName;
+        }
+        if (this.formData.lastName != "" && this.formData.lastName != this.oldData.lastName)
+        {
+          update.lastName = this.formData.lastName;
+        }
+        if (this.formData.avatar != "" && this.formData.avatar != this.oldData.avatar)
+        {
+          update.avatar = this.formData.avatar;
+        }
+
+        // Send updated properties to API
+        fetch("https://reqres.in/api/users/" + this.formData.id, {body: JSON.stringify(update), method: "PATCH"})
+        .then
+        ((response) =>
+        {
+          if (response.ok)
+          {
+            alert("Person bearbeitet");
+            location.reload();
+          }
+          else
+          {
+            alert(response.status + "\nPerson konnte nicht bearbeitet werden.");
+          }
+        },
+        (reason) =>
+        {
+          alert("Person konnte nicht bearbeitet werden.\nGrund:\n" + reason);
+        });
+
+        return;
+      }
+
+      // Check if form is filled
       if (this.filledForm)
       {
-        fetch("https://reqres.in/api/users", {body: JSON.stringify(this.person), method: "POST"} )
+        // If TRUE -> Send data to API
+        fetch("https://reqres.in/api/users", {body: JSON.stringify(this.formData), method: "POST"} )
         .then
         ((response) =>
         {
@@ -50,12 +122,11 @@ x = new Vue({
       {
         alert("Bitte alle Pflichtfelder ausfüllen");
       }
-    },  // End of sendData
+    },
 
-
-    getTableData: function()
+    getTableData: function()  // GET-Request
     {
-      fetch("https://reqres.in/api/users?page=1", {method: "GET"})
+      fetch("https://reqres.in/api/users?page=" + this.currentPage, {method: "GET"})
       .then
       ((response) =>
       {
@@ -65,110 +136,220 @@ x = new Vue({
           .then
           ((json) =>
           {
-            ///// Insert table-rows /////
             for (var i = 0; i < json.data.length; i++)
             {
-              this.$refs.person_tbody.innerHTML += this.newtableRow;
-              this.fillTableRow(this.$refs.person_tbody.children[i], json.data[i]);
-            }
+              this.persons[i] = {
+                id: json.data[i].id,
+                email: json.data[i].email,
+                firstName: json.data[i].first_name,
+                lastName: json.data[i].last_name,
+                avatar: json.data[i].avatar,
+                select: '' };
 
-            ///// Add onclick-event /////
-            for (var i = 0; i < this.$refs.person_tbody.children.length; i++)
-            {
-              this.$refs.person_tbody.children[i].onclick = this.clickItem;
+              if (this.persons[i].id === this.formData.id)
+              {
+                this.persons[i].select = "select";
+              }
             }
-
-            this.ladeInfo = false;
+            this.loadInfo = false;
+            this.lastPage = json.total_pages;
           });
         }
         else
         {
           alert(response.status + "\nPersonen konnten nicht geladen werden");
-          this.ladeInfo = false;
+          this.loadInfo = false;
         }
       },
       (reason) =>
       {
         alert("Personen konnten nicht geladen werden.\nGrund:\n" + reason);
-        this.ladeInfo = false;
+        this.loadInfo = false;
       });
     },
 
-
-    fillTableRow: function(row, data)
+    clickPerson: function(event)  // onclick person
     {
-      row.dataset.personId = data.id; // Insert person-ID into tablerow
+      var index = event.target.parentElement.sectionRowIndex;
 
-      ///// Insert person-data into table /////
-      if (row.querySelector("td[data-fieldname = 'id']") != null)
+      // Check if allready selected
+      if (this.persons[index].select === "select")
       {
-          row.querySelector("td[data-fieldname = 'id']").innerHTML = data.id;
-      }
+        // If Selected -> Remove selection
 
-      if (row.querySelector("td[data-fieldname = 'email']") != null)
-      {
-          row.querySelector("td[data-fieldname = 'email']").innerHTML = data.email;
-      }
-
-      if (row.querySelector("td[data-fieldname = 'first_name']") != null)
-      {
-          row.querySelector("td[data-fieldname = 'first_name']").innerHTML = data.first_name;
-      }
-
-      if (row.querySelector("td[data-fieldname = 'last_name']") != null)
-      {
-          row.querySelector("td[data-fieldname = 'last_name']").innerHTML = data.last_name;
-      }
-
-      if (row.querySelector("td[data-fieldname = 'avatar']") != null)
-      {
-          row.querySelector("td[data-fieldname = 'avatar']").innerHTML = "<img src='" + data.avatar + "' />";
-      }
-    },
-
-
-    clickItem: function(event)
-    {
-      var item = event.target.parentElement;
-      console.log(item);
-      /*if (item.className === "select")
-      {
-        this.change = false;
-        item.className = "";
-        this.formLable = "Neue Person hinzufügen";
+        this.persons[index].select = "";
+        this.edit = false;
+        this.formTitle = "Neue Person hinzufuegen";
         this.formSubmit = "Erstellen";
+        this.disableId = false;
+        this.formData = {id: '', email: '', firstName: '', lastName: '', avatar: ''};
+        return;
+      }
 
-      }*/
+      // Else -> Remove selection from other persons
+      for (var i = 0; i < this.persons.length; i++)
+      {
+        this.persons[i].select = "";
+      }
+
+      // Select clicked person
+      this.persons[index].select = "select";
+      var userId = this.persons[index].id;
+      this.edit = true;
+      this.formTitle = "Markierte Person bearbeiten";
+      this.formSubmit = "Bearbeiten";
+      this.disableId = true;
+
+      // Insert person data into form
+      fetch("https://reqres.in/api/users/" + userId, {method: "GET"})
+      .then
+      ((response) =>
+      {
+        if (response.ok)
+        {
+          response.json()
+          .then
+          ((json) =>
+          {
+            this.formData.id = json.data.id;
+            this.formData.email = json.data.email;
+            this.formData.firstName = json.data.first_name;
+            this.formData.lastName = json.data.last_name;
+            this.formData.avatar = json.data.avatar;
+
+            this.oldData.id = json.data.id;
+            this.oldData.email = json.data.email;
+            this.oldData.firstName = json.data.first_name;
+            this.oldData.lastName = json.data.last_name;
+            this.oldData.avatar = json.data.avatar;
+          });
+        }
+        else
+        {
+          alert(response.status + "\nDaten der Person konnten nicht geladen werden");
+        }
+      },
+      (reason) =>
+      {
+        alert("Daten der Person konnten nicht geladen werden.\nGrund:\n" + reason);
+      });
     },
 
+    nextPage: function()
+    {
+      this.loadInfo = true;
+      this.currentPage++;
+      this.getTableData();
+      /*fetch("https://reqres.in/api/users?page=" + this.currentPage, {method: "GET"})
+      .then
+      ((response) =>
+      {
+        if (response.ok)
+        {
+          response.json()
+          .then
+          ((json) =>
+          {
+            for (var i = 0; i < json.data.length; i++)
+            {
+              this.persons[i] = { id: json.data[i].id,
+                                email: json.data[i].email,
+                                firstName: json.data[i].first_name,
+                                lastName: json.data[i].last_name,
+                                avatar: json.data[i].avatar,
+                                select: '' };
+            }
+            this.loadInfo = false;
+
+            this.lastPage = json.total_pages;
+          });
+        }
+        else
+        {
+          alert(response.status + "\nPersonen konnten nicht geladen werden");
+          this.loadInfo = false;
+        }
+      },
+      (reason) =>
+      {
+        alert("Personen konnten nicht geladen werden.\nGrund:\n" + reason);
+        this.loadInfo = false;
+      });*/
+    },
+
+    priorPage: function()
+    {
+      this.loadInfo = true;
+      this.currentPage--;
+      this.getTableData();
+      /*fetch("https://reqres.in/api/users?page=" + this.currentPage, {method: "GET"})
+      .then
+      ((response) =>
+      {
+        if (response.ok)
+        {
+          response.json()
+          .then
+          ((json) =>
+          {
+            for (var i = 0; i < json.data.length; i++)
+            {
+              this.persons[i] = { id: json.data[i].id,
+                                email: json.data[i].email,
+                                firstName: json.data[i].first_name,
+                                lastName: json.data[i].last_name,
+                                avatar: json.data[i].avatar,
+                                select: '' };
+            }
+            this.loadInfo = false;
+
+            this.lastPage = json.total_pages;
+          });
+        }
+        else
+        {
+          alert(response.status + "\nPersonen konnten nicht geladen werden");
+          this.loadInfo = false;
+        }
+      },
+      (reason) =>
+      {
+        alert("Personen konnten nicht geladen werden.\nGrund:\n" + reason);
+        this.loadInfo = false;
+      });*/
+    },
   },
 
   computed:
   {
-    newtableRow: function()
+    filledForm: function()  // Check if all needed inputs are filled
     {
-      var columns = this.$refs.person_theadline.childElementCount;
-      var row = "<tr data-person-id=''>";
-      for (var i = 0; i < columns; i++)
-      {
-        row += "<td data-fieldname='" + this.$refs.person_theadline.children[i].dataset.fieldname + "'></td>";
-      }
-      row += "</tr>";
-
-      return row;
-    },
-
-
-
-    /*filledForm: function() // Check if all needed inputs are filled, return true if yes
-    {
-      if (this.person.id != "" && this.person.email != "" && this.person.firstName != "" && this.person.lastName != "")
+      if (this.formData.id != "" && this.formData.email != "" && this.formData.firstName != "" && this.formData.lastName != "")
       {
         return true;
       }
-        return false;
-    }*/
+      return false;
+    },
+
+    cLastPage: function()
+    {
+      if (this.currentPage >= this.lastPage)
+      {
+        return true;
+      }
+      return false;
+    },
+
+    cFirstPage: function()
+    {
+      if (this.currentPage <= this.firstPage)
+      {
+        return true;
+      }
+      return false;
+    },
   },
+
 
   mounted: function()
   {
