@@ -75,6 +75,21 @@ button:hover {
   border-color: red;
 }
 
+.popup {
+  position: fixed;
+  bottom: 1em;
+  left: 1em;
+  padding: 0.5em;
+  background-color: black;
+  color: white;
+  animation: show 1s;
+}
+
+@keyframes show {
+  from {opacity: 0;}
+  to {opacity: 1;}
+}
+
 /* Tabelle */
 
 #person-table {

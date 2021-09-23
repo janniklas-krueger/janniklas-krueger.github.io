@@ -24,7 +24,7 @@
         <p>Zum Ändern oder Löschen der Personen einen Datensatz anklicken:</p>
         <table id="person-table">
             <thead>
-            <tr ref="theadline">
+            <tr>
                 <td>ID</td>
                 <td>Email</td>
                 <td>Vorname</td>
@@ -32,8 +32,8 @@
                 <td>Avatar</td>
             </tr>
             </thead>
-            <tbody ref="tbody">
-            <tr v-for="person in persons" :key="person.id" :data-person-id="person.id" :class="person.select" @click="clickPerson">
+            <tbody>
+            <tr v-for="person in persons" :key="person.id" :data-person-id="person.id" :class="{select: person.select}" @click="clickPerson">
                 <td>{{person.id}}</td>
                 <td>{{person.email}}</td>
                 <td>{{person.firstName}}</td>
@@ -67,14 +67,17 @@
             <img v-bind:src="formData.avatar" class="avatar_img"/>
 
             <button class="std-button" type="button" v-on:click="sendData">{{formSubmit}}</button>
-            <button class="warn-button" type="button" @click="deleteDlg = true" v-if="edit">Löschen</button>
+            <button class="warn-button" type="button" @click="showDeleteDlg = true" v-if="edit">Löschen</button>
 
-            <div v-if="deleteDlg">
+            <div v-if="showDeleteDlg">
                 <p>Wirklich löschen?</p>
                 <button class="warn-button" type="button" @click="deleteData">Ja</button>
-                <button class="std-button" type="button" @click="deleteDlg = false">Nein</button>
+                <button class="std-button" type="button" @click="showDeleteDlg = false">Nein</button>
             </div>
         </form>
+        <div v-if="showPopup" class="popup">
+            <span>{{popupText}}</span>
+        </div>
     </section>
     </main>
 </div>

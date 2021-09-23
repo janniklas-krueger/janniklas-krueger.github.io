@@ -15,11 +15,14 @@ x = new Vue({
     edit: false,
     disableId: false,
 
-    deleteDlg: false,
+    showDeleteDlg: false,
 
     currentPage: 1,
     firstPage: 1,
     lastPage: '',
+
+    popupText: '',
+    showPopup: false,
 
   },
 
@@ -33,8 +36,7 @@ x = new Vue({
       {
         if (response.ok)
         {
-          alert(response.status + "\nPerson gelöscht");
-          location.reload();
+          this.activatePopup("Person gelöscht");
         }
         else
         {
@@ -53,7 +55,7 @@ x = new Vue({
       if (this.edit)
       {
         // If TRUE -> Insert edits into update
-        var update = {};
+        var update = {email: '', firstName: '', lastName: '', avatar: ''};
 
         if (this.formData.email != "" && this.formData.email != this.oldData.email)
         {
@@ -72,15 +74,22 @@ x = new Vue({
           update.avatar = this.formData.avatar;
         }
 
-        // Send updated properties to API
-        fetch("https://reqres.in/api/users/" + this.formData.id, {body: JSON.stringify(update), method: "PATCH"})
+        // Check if any data was changed
+        if (update.email == '' && update.firstName == '' && update.lastName == '' && update.avatar == '')
+        {
+          // If TRUE -> return
+          alert("Es wurden keine Daten verändert");
+          return;
+        }
+
+        // Else -> Send updated properties to API
+        fetch("https://reqres.in/api/users/" + this.formData.id, {body: JSON.stringify(this.update), method: "PATCH"})
         .then
         ((response) =>
         {
           if (response.ok)
           {
-            alert("Person bearbeitet");
-            location.reload();
+            this.activatePopup("Person bearbeitet");
           }
           else
           {
@@ -105,8 +114,7 @@ x = new Vue({
         {
           if (response.ok)
           {
-            alert("Person erstellt!");
-            location.reload();
+            this.activatePopup("Person erstellt");
           }
           else
           {
@@ -144,11 +152,11 @@ x = new Vue({
                 firstName: json.data[i].first_name,
                 lastName: json.data[i].last_name,
                 avatar: json.data[i].avatar,
-                select: '' };
+                select: false };
 
               if (this.persons[i].id === this.formData.id)
               {
-                this.persons[i].select = "select";
+                this.persons[i].select = true;
               }
             }
             this.loadInfo = false;
@@ -173,32 +181,29 @@ x = new Vue({
       var index = event.target.parentElement.sectionRowIndex;
 
       // Check if allready selected
-      if (this.persons[index].select === "select")
+      if (this.persons[index].select === true)
       {
         // If Selected -> Remove selection
 
-        this.persons[index].select = "";
-        this.edit = false;
-        this.formTitle = "Neue Person hinzufuegen";
-        this.formSubmit = "Erstellen";
-        this.disableId = false;
-        this.formData = {id: '', email: '', firstName: '', lastName: '', avatar: ''};
+        this.persons[index].select = false;
+        this.removeSelection();
         return;
       }
 
       // Else -> Remove selection from other persons
       for (var i = 0; i < this.persons.length; i++)
       {
-        this.persons[i].select = "";
+        this.persons[i].select = false;
       }
 
       // Select clicked person
-      this.persons[index].select = "select";
+      this.persons[index].select = true;
       var userId = this.persons[index].id;
-      this.edit = true;
       this.formTitle = "Markierte Person bearbeiten";
       this.formSubmit = "Bearbeiten";
+      this.edit = true;
       this.disableId = true;
+      this.showDeleteDlg = false;
 
       // Insert person data into form
       fetch("https://reqres.in/api/users/" + userId, {method: "GET"})
@@ -235,46 +240,39 @@ x = new Vue({
       });
     },
 
+    removeSelection: function()
+    {
+      this.formTitle = "Neue Person hinzufuegen";
+      this.formSubmit = "Erstellen";
+      this.edit = false;
+      this.disableId = false;
+      this.showDeleteDlg = false;
+      this.formData = {id: '', email: '', firstName: '', lastName: '', avatar: ''};
+    },
+
+    activatePopup: function(message)
+    {
+      this.popupText = message;
+      this.showPopup = true;
+
+      setTimeout(() => {this.showPopup = false;}, 3000);
+
+      // Reload Table
+      this.getTableData();
+
+      // Remove Selection
+      for (var i = 0; i < this.persons.length; i++)
+      {
+        this.persons[i].select = false;
+      }
+      this.removeSelection();
+    },
+
     nextPage: function()
     {
       this.loadInfo = true;
       this.currentPage++;
       this.getTableData();
-      /*fetch("https://reqres.in/api/users?page=" + this.currentPage, {method: "GET"})
-      .then
-      ((response) =>
-      {
-        if (response.ok)
-        {
-          response.json()
-          .then
-          ((json) =>
-          {
-            for (var i = 0; i < json.data.length; i++)
-            {
-              this.persons[i] = { id: json.data[i].id,
-                                email: json.data[i].email,
-                                firstName: json.data[i].first_name,
-                                lastName: json.data[i].last_name,
-                                avatar: json.data[i].avatar,
-                                select: '' };
-            }
-            this.loadInfo = false;
-
-            this.lastPage = json.total_pages;
-          });
-        }
-        else
-        {
-          alert(response.status + "\nPersonen konnten nicht geladen werden");
-          this.loadInfo = false;
-        }
-      },
-      (reason) =>
-      {
-        alert("Personen konnten nicht geladen werden.\nGrund:\n" + reason);
-        this.loadInfo = false;
-      });*/
     },
 
     priorPage: function()
@@ -282,41 +280,6 @@ x = new Vue({
       this.loadInfo = true;
       this.currentPage--;
       this.getTableData();
-      /*fetch("https://reqres.in/api/users?page=" + this.currentPage, {method: "GET"})
-      .then
-      ((response) =>
-      {
-        if (response.ok)
-        {
-          response.json()
-          .then
-          ((json) =>
-          {
-            for (var i = 0; i < json.data.length; i++)
-            {
-              this.persons[i] = { id: json.data[i].id,
-                                email: json.data[i].email,
-                                firstName: json.data[i].first_name,
-                                lastName: json.data[i].last_name,
-                                avatar: json.data[i].avatar,
-                                select: '' };
-            }
-            this.loadInfo = false;
-
-            this.lastPage = json.total_pages;
-          });
-        }
-        else
-        {
-          alert(response.status + "\nPersonen konnten nicht geladen werden");
-          this.loadInfo = false;
-        }
-      },
-      (reason) =>
-      {
-        alert("Personen konnten nicht geladen werden.\nGrund:\n" + reason);
-        this.loadInfo = false;
-      });*/
     },
   },
 
