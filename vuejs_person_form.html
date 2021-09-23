@@ -2,7 +2,7 @@
 <html lang="de">
 <head>
     <meta charset="UTF-8">
-    <link href="portfolio.css" type="text/css" rel="stylesheet">
+    <link href="vue_js.css" type="text/css" rel="stylesheet">
     <title>Hallo Welt</title>
     <script src="https://unpkg.com/vue"></script>
 </head>
@@ -50,20 +50,41 @@
 
         <h3>{{formTitle}}</h3>
         <form id="form">
-            <label>ID:</label><br />
-            <input type="text" v-model="formData.id" :disabled="disableId"><br />
+            <label>
+                ID: <span>*</span>
+                <span v-if="formData.id == '' && triedPost">
+                    Dieses Feld bitte ausfüllen
+                </span>
+            </label><br />
+            <input type="text" v-model="formData.id" :class="{missing: formData.id == '' && triedPost}" :disabled="disableId"><br />
 
-            <label>Email:</label><br />
-            <input type="text" v-model="formData.email" class="email"><br />
 
-            <label>Vorname:</label><br />
-            <input type="text" v-model="formData.firstName"><br />
+            <label>
+                Email: <span>*</span>
+                <span v-if="formData.email == '' && triedPost">
+                    Dieses Feld bitte ausfüllen
+                </span>
+            </label><br />
+            <input type="text" v-model="formData.email" :class="{missing: formData.email == '' && triedPost}" class="long"><br />
 
-            <label>Nachname:</label><br />
-            <input type="text" v-model="formData.lastName"><br />
+            <label>
+                Vorname: <span>*</span>
+                <span v-if="formData.firstName == '' && triedPost">
+                    Dieses Feld bitte ausfüllen
+                </span>
+            </label><br />
+            <input type="text" v-model="formData.firstName" :class="{missing: formData.firstName == '' && triedPost}"><br />
 
-            <label>*Avatar-URI:</label><br />
-            <input type="text" v-model="formData.avatar" class="avatar"><br />
+            <label>
+                Nachname: <span>*</span>
+                <span v-if="formData.lastName == '' && triedPost">
+                    Dieses Feld bitte ausfüllen
+                </span>
+            </label><br />
+            <input type="text" v-model="formData.lastName" :class="{missing: formData.lastName == '' && triedPost}"><br />
+
+            <label>Avatar-URI:</label><br />
+            <input type="text" v-model="formData.avatar" class="long"><br />
             <img v-bind:src="formData.avatar" class="avatar_img"/>
 
             <button class="std-button" type="button" v-on:click="sendData">{{formSubmit}}</button>

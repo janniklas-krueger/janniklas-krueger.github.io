@@ -1,0 +1,136 @@
+* {
+  font-size: 18px;
+  font-family: sans-serif;
+}
+
+body {
+  margin: 0;
+  background-color: #ffffa0;
+}
+
+#wrapper {
+  max-width: 1000px;
+  margin: 1em auto;
+  background-color: #ffffff;
+  padding: 1em;
+}
+
+/* Links */
+a {
+  text-decoration: none;
+  color: blue;
+}
+
+a:hover {
+  color: silver;
+}
+
+/* Header */
+h1 {
+  font-size: 2em;
+  margin-bottom: 0;
+}
+
+#h1-hr {
+  margin-bottom: 1.5em;
+}
+
+h2 {
+  font-size: 1.25em;
+}
+
+/* Formular */
+form {
+  position: relative;
+}
+
+form * {
+  margin-bottom: 0.25em;
+}
+
+form label span {
+  color: red;
+  font-size: 0.75em;
+}
+
+input {
+  border:solid 1px grey;
+  border-radius: 1px;
+}
+
+input.missing {
+  border: solid 1px red;
+}
+
+input.long {
+  width: 20em;
+}
+
+.avatar_img {
+  position: absolute;
+  width: 128px;
+  left: 25em;
+  top: 0;
+  margin: 0;
+}
+
+button:hover {
+  cursor: pointer;
+}
+
+.std-button {
+  background-color: lightgrey;
+  border-color: lightgrey;
+}
+
+.warn-button {
+  background-color: red;
+  border-color: red;
+}
+
+/* Popup */
+.popup {
+  position: fixed;
+  bottom: 1em;
+  left: 1em;
+  padding: 0.5em;
+  background-color: black;
+  color: white;
+  animation: show 1s;
+}
+
+@keyframes show {
+  from {opacity: 0;}
+  to {opacity: 1;}
+}
+
+/* Table */
+#person-table {
+  border-collapse: collapse;
+  margin-bottom: 0.25em;
+}
+
+#person-table thead {
+  text-align: center;
+}
+
+#person-table * {
+  border: solid 2px;
+  padding: 0.5em;
+  user-select: none;
+}
+
+#person-table img {
+  border: 0;
+  padding: 0;
+  width: 64px;
+}
+
+#person-table tbody tr {
+  cursor: pointer;
+}
+
+.select {
+  background-color: blue;
+  color: white;
+}

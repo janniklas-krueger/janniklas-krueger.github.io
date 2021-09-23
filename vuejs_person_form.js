@@ -24,6 +24,8 @@ x = new Vue({
     popupText: '',
     showPopup: false,
 
+    triedPost: false,
+
   },
 
   methods:
@@ -115,6 +117,7 @@ x = new Vue({
           if (response.ok)
           {
             this.activatePopup("Person erstellt");
+            this.triedPost = false;
           }
           else
           {
@@ -129,6 +132,7 @@ x = new Vue({
       else
       {
         alert("Bitte alle Pflichtfelder ausfüllen");
+        this.triedPost = true;
       }
     },
 
