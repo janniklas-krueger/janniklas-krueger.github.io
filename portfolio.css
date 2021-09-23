@@ -104,6 +104,7 @@ button:hover {
 #person-table * {
   border: solid 2px;
   padding: 0.5em;
+  user-select: none;
 }
 
 #person-table img {
