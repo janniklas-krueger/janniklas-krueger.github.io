@@ -21,15 +21,16 @@ x = new Vue({
     firstPage: 1,
     lastPage: '',
 
-    popupText: '',
-    showPopup: false,
+    popups: [],
+    popupPositions: '',
 
-    triedPost: false,
+    triedEmptyPost: false,
 
   },
 
   methods:
   {
+
     deleteData: function() // DELETE-Request
     {
       fetch("https://reqres.in/api/users/" + this.formData.id, {method: "DELETE"})
@@ -38,7 +39,7 @@ x = new Vue({
       {
         if (response.ok)
         {
-          this.activatePopup("Person gelöscht");
+          this.showPopup("Person gelöscht");
         }
         else
         {
@@ -91,7 +92,7 @@ x = new Vue({
         {
           if (response.ok)
           {
-            this.activatePopup("Person bearbeitet");
+            this.showPopup("Person bearbeitet");
           }
           else
           {
@@ -116,8 +117,8 @@ x = new Vue({
         {
           if (response.ok)
           {
-            this.activatePopup("Person erstellt");
-            this.triedPost = false;
+            this.showPopup("Person erstellt");
+            this.triedEmptyPost = false;
           }
           else
           {
@@ -131,8 +132,7 @@ x = new Vue({
       }
       else
       {
-        alert("Bitte alle Pflichtfelder ausfüllen");
-        this.triedPost = true;
+        this.triedEmptyPost = true;
       }
     },
 
@@ -150,13 +150,13 @@ x = new Vue({
           {
             for (var i = 0; i < json.data.length; i++)
             {
-              this.persons[i] = {
+              this.$set(this.persons, i, {
                 id: json.data[i].id,
                 email: json.data[i].email,
                 firstName: json.data[i].first_name,
                 lastName: json.data[i].last_name,
                 avatar: json.data[i].avatar,
-                select: false };
+                select: false });
 
               if (this.persons[i].id === this.formData.id)
               {
@@ -209,6 +209,8 @@ x = new Vue({
       this.disableId = true;
       this.showDeleteDlg = false;
 
+      this.triedEmptyPost = false;
+
       // Insert person data into form
       fetch("https://reqres.in/api/users/" + userId, {method: "GET"})
       .then
@@ -254,12 +256,11 @@ x = new Vue({
       this.formData = {id: '', email: '', firstName: '', lastName: '', avatar: ''};
     },
 
-    activatePopup: function(message)
+    showPopup: function(message)
     {
-      this.popupText = message;
-      this.showPopup = true;
-
-      setTimeout(() => {this.showPopup = false;}, 3000);
+      // Define Popup
+      this.$set(this.popups, this.popups.length, {message: message, show: true, style: 'bottom:' + (1 + 3 * this.popups.length) + 'em;'});
+      setTimeout(this.removePopup, 5000);
 
       // Reload Table
       this.getTableData();
@@ -270,6 +271,19 @@ x = new Vue({
         this.persons[i].select = false;
       }
       this.removeSelection();
+    },
+
+    removePopup: function()
+    {
+      const oldestPopup = 0;
+      this.popups.splice(oldestPopup, 1);
+
+      for (var i = 0; i < this.popups.length; i++)
+      {
+        this.popupPositions = '--oldPos:' + (1 + 3 * (i+1)) + 'em;';
+        this.popupPositions += '--newPos:' + (1 + 3 * i) + 'em;';
+        this.popups[i].style = 'animation: move 0.5s;';
+      }
     },
 
     nextPage: function()

@@ -19,7 +19,7 @@
     </nav>
 
     <main>
-    <section id="person">
+    <section id="person" :style="popupPositions">
         <h2>Personen</h2>
         <p>Zum Ändern oder Löschen der Personen einen Datensatz anklicken:</p>
         <table id="person-table">
@@ -52,36 +52,36 @@
         <form id="form">
             <label>
                 ID: <span>*</span>
-                <span v-if="formData.id == '' && triedPost">
+                <span v-if="formData.id == '' && triedEmptyPost">
                     Dieses Feld bitte ausfüllen
                 </span>
             </label><br />
-            <input type="text" v-model="formData.id" :class="{missing: formData.id == '' && triedPost}" :disabled="disableId"><br />
+            <input type="text" v-model="formData.id" :class="{missing: formData.id == '' && triedEmptyPost}" :disabled="disableId"><br />
 
 
             <label>
                 Email: <span>*</span>
-                <span v-if="formData.email == '' && triedPost">
+                <span v-if="formData.email == '' && triedEmptyPost">
                     Dieses Feld bitte ausfüllen
                 </span>
             </label><br />
-            <input type="text" v-model="formData.email" :class="{missing: formData.email == '' && triedPost}" class="long"><br />
+            <input type="text" v-model="formData.email" :class="{missing: formData.email == '' && triedEmptyPost}" class="long"><br />
 
             <label>
                 Vorname: <span>*</span>
-                <span v-if="formData.firstName == '' && triedPost">
+                <span v-if="formData.firstName == '' && triedEmptyPost">
                     Dieses Feld bitte ausfüllen
                 </span>
             </label><br />
-            <input type="text" v-model="formData.firstName" :class="{missing: formData.firstName == '' && triedPost}"><br />
+            <input type="text" v-model="formData.firstName" :class="{missing: formData.firstName == '' && triedEmptyPost}"><br />
 
             <label>
                 Nachname: <span>*</span>
-                <span v-if="formData.lastName == '' && triedPost">
+                <span v-if="formData.lastName == '' && triedEmptyPost">
                     Dieses Feld bitte ausfüllen
                 </span>
             </label><br />
-            <input type="text" v-model="formData.lastName" :class="{missing: formData.lastName == '' && triedPost}"><br />
+            <input type="text" v-model="formData.lastName" :class="{missing: formData.lastName == '' && triedEmptyPost}"><br />
 
             <label>Avatar-URI:</label><br />
             <input type="text" v-model="formData.avatar" class="long"><br />
@@ -96,8 +96,8 @@
                 <button class="std-button" type="button" @click="showDeleteDlg = false">Nein</button>
             </div>
         </form>
-        <div v-if="showPopup" class="popup">
-            <span>{{popupText}}</span>
+        <div v-for="popup in popups" v-if="popup.show" :style="popup.style" class="popup">
+            <span>{{popup.message}}</span>
         </div>
     </section>
     </main>

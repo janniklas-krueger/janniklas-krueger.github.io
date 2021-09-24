@@ -104,6 +104,11 @@ button:hover {
   to {opacity: 1;}
 }
 
+@keyframes move {
+  from {bottom: var(--oldPos);}
+    to {bottom: var(--newPos);}
+}
+
 /* Table */
 #person-table {
   border-collapse: collapse;
