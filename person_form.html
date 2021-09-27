@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <link href="portfolio.css" type="text/css" rel="stylesheet">
+    <title>Hallo Welt</title>
+</head>
+<body>
+<div id="wrapper">
+    <header>
+        <h1>Hallo Welt</h1>
+        <hr id="h1-hr"/>
+    </header>
+
+    <nav><a href="index.html">Start</a></nav>
+
+    <main>
+        <h2>Personen</h2>
+        <p>Zum Ändern oder Löschen der Personen einen Datensatz anklicken:</p>
+        <table id="persontabelle">
+            <thead>
+                <tr id="person-tablehead-row">
+                    <td data-fieldtype="id">ID</td>
+                    <td data-fieldtype="email">Email</td>
+                    <td data-fieldtype="first_name">Vorname</td>
+                    <td data-fieldtype="last_name">Nachname</td>
+                    <td data-fieldtype="avatar">Avatar-URI</td>
+                </tr>
+            </thead>
+            <tbody id="person-tablebody">
+            </tbody>
+        </table>
+        <p id="load-info">Personendaten werden geladen...</p>
+        <button id="prior-page" class="std-button" type="button">Vorherige Seite</button>
+        <button id="next-page" class="std-button" type="button">Nächste Seite</button>
+
+
+        <h3 id="form-title">Neue Person hinzuf&uuml;gen</h3>
+        <form id="personform">
+            <label for="id">ID:</label><br />
+            <input type="text" id="id" class="field"><br />
+
+            <label for="email">Email:</label><br />
+            <input type="text" id="email" class="field"><br />
+
+            <label for="first_name">Vorname:</label><br />
+            <input type="text" id="first_name" class="field"><br />
+
+            <label for="last_name">Nachname:</label><br />
+            <input type="text" id="last_name" class="field"><br />
+
+            <label for="avatar">*Avatar-URI:</label><br />
+            <input type="text" id="avatar" class="field"><br />
+            <img src="" id="avatar_img"/>
+
+            <button id="send-button" class="std-button" type="button">Erstellen</button>
+            <button id="delete-button" type="button">Löschen</button>
+
+            <p id="pers-delete-text">Wirklich löschen?</p>
+            <button id="pers-delete-yes" type="button">Ja</button>
+            <button id="pers-delete-no" class="std-button" type="button">Nein</button>
+        </form>
+    </main>
+</div>
+<script src="person_form.js"></script>
+</body>
+</html>

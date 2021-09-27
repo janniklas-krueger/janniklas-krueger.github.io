@@ -10,10 +10,9 @@ body {
 
 #wrapper {
   max-width: 1000px;
-  margin: auto;
+  margin: 1em auto;
   background-color: #ffffff;
   padding: 1em;
-  margin-top: 1em; 
 }
 
 a {
@@ -30,10 +29,79 @@ h1 {
   margin-bottom: 0;
 }
 
+h1:hover {
+    cursor: pointer;
+}
+
 #h1-hr {
   margin-bottom: 1.5em;
 }
 
 h2 {
   font-size: 1.25em;
+}
+
+form {
+  position: relative;
+}
+
+form * {
+  margin-bottom: 0.25em;
+}
+
+#email, #avatar {
+  width: 20em;
+}
+
+#avatar_img {
+  position: absolute;
+  width: 128px;
+  left: 25em;
+  top: 0;
+  margin: 0;
+}
+
+button:hover {
+  cursor: pointer;
+}
+
+.std-button {
+  background-color: lightgrey;
+  border-color: lightgrey;
+}
+
+#delete-button, #pers-delete-yes {
+  background-color: red;
+  border-color: red;
+}
+
+/* Tabelle */
+
+#persontabelle {
+  border-collapse: collapse;
+  margin-bottom: 0.25em;
+}
+
+#persontabelle thead {
+  text-align: center;
+}
+
+#persontabelle * {
+  border: solid 2px;
+  padding: 0.5em;
+}
+
+#persontabelle img {
+  border: 0;
+  padding: 0;
+  height: 64px;
+}
+
+#persontabelle tbody tr {
+  cursor: pointer;
+}
+
+.select {
+  background-color: blue;
+  color: white;
 }
