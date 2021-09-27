@@ -33,7 +33,7 @@
             </tr>
             </thead>
             <tbody>
-            <tr v-for="person in persons" :key="person.id" :data-person-id="person.id" :class="{select: person.select}" @click="clickPerson">
+            <tr v-for="person in persons" :key="person.id" :class="{select: person.id == formData.id}" @click="clickPerson(person.id)">
                 <td>{{person.id}}</td>
                 <td>{{person.email}}</td>
                 <td>{{person.firstName}}</td>
@@ -44,8 +44,8 @@
         </table>
         <p v-if="loadInfo">Personendaten werden geladen...</p>
         <div class="tpages">
-            <button class="std-button" type="button" @click="priorPage" :disabled="cFirstPage">Vorherige Seite</button>
-            <button class="std-button" type="button" @click="nextPage" :disabled="cLastPage">Nächste Seite</button>
+            <button class="std-button" type="button" @click="priorPage" :disabled="isFirstPage">Vorherige Seite</button>
+            <button class="std-button" type="button" @click="nextPage" :disabled="isLastPage">Nächste Seite</button>
         </div>
 
         <h3>{{formTitle}}</h3>
@@ -96,7 +96,7 @@
                 <button class="std-button" type="button" @click="showDeleteDlg = false">Nein</button>
             </div>
         </form>
-        <div v-for="popup in popups" v-if="popup.show" :style="popup.style" class="popup">
+        <div v-for="popup in popups" :style="popup.position" class="popup">
             <span>{{popup.message}}</span>
         </div>
     </section>

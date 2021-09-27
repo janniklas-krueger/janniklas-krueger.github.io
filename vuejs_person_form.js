@@ -8,7 +8,7 @@ x = new Vue({
 
     persons: [],
 
-    formTitle: 'Neue Person hinzufuegen',
+    formTitle: 'Neue Person hinzufügen',
     formSubmit: 'Erstellen',
 
     loadInfo: true,
@@ -19,7 +19,7 @@ x = new Vue({
 
     currentPage: 1,
     firstPage: 1,
-    lastPage: '',
+    totalPages: '',
 
     popups: [],
     popupPositions: '',
@@ -155,16 +155,10 @@ x = new Vue({
                 email: json.data[i].email,
                 firstName: json.data[i].first_name,
                 lastName: json.data[i].last_name,
-                avatar: json.data[i].avatar,
-                select: false });
-
-              if (this.persons[i].id === this.formData.id)
-              {
-                this.persons[i].select = true;
-              }
+                avatar: json.data[i].avatar });
             }
             this.loadInfo = false;
-            this.lastPage = json.total_pages;
+            this.totalPages = json.total_pages;
           });
         }
         else
@@ -180,29 +174,15 @@ x = new Vue({
       });
     },
 
-    clickPerson: function(event)  // onclick person
+    clickPerson: function(personId)  // onclick person
     {
-      var index = event.target.parentElement.sectionRowIndex;
-
       // Check if allready selected
-      if (this.persons[index].select === true)
+      if (this.formData.id != "" && personId === this.formData.id)
       {
-        // If Selected -> Remove selection
-
-        this.persons[index].select = false;
         this.removeSelection();
         return;
       }
 
-      // Else -> Remove selection from other persons
-      for (var i = 0; i < this.persons.length; i++)
-      {
-        this.persons[i].select = false;
-      }
-
-      // Select clicked person
-      this.persons[index].select = true;
-      var userId = this.persons[index].id;
       this.formTitle = "Markierte Person bearbeiten";
       this.formSubmit = "Bearbeiten";
       this.edit = true;
@@ -212,7 +192,7 @@ x = new Vue({
       this.triedEmptyPost = false;
 
       // Insert person data into form
-      fetch("https://reqres.in/api/users/" + userId, {method: "GET"})
+      fetch("https://reqres.in/api/users/" + personId, {method: "GET"})
       .then
       ((response) =>
       {
@@ -248,7 +228,7 @@ x = new Vue({
 
     removeSelection: function()
     {
-      this.formTitle = "Neue Person hinzufuegen";
+      this.formTitle = "Neue Person hinzufügen";
       this.formSubmit = "Erstellen";
       this.edit = false;
       this.disableId = false;
@@ -259,17 +239,11 @@ x = new Vue({
     showPopup: function(message)
     {
       // Define Popup
-      this.$set(this.popups, this.popups.length, {message: message, show: true, style: 'bottom:' + (1 + 3 * this.popups.length) + 'em;'});
+      this.$set(this.popups, this.popups.length, {message: message, show: true, position: 'bottom:' + (1 + 3 * this.popups.length) + 'em;'});
       setTimeout(this.removePopup, 5000);
 
       // Reload Table
       this.getTableData();
-
-      // Remove Selection
-      for (var i = 0; i < this.persons.length; i++)
-      {
-        this.persons[i].select = false;
-      }
       this.removeSelection();
     },
 
@@ -282,7 +256,7 @@ x = new Vue({
       {
         this.popupPositions = '--oldPos:' + (1 + 3 * (i+1)) + 'em;';
         this.popupPositions += '--newPos:' + (1 + 3 * i) + 'em;';
-        this.popups[i].style = 'animation: move 0.5s;';
+        this.popups[i].position = 'animation: move 0.5s;';
       }
     },
 
@@ -312,16 +286,16 @@ x = new Vue({
       return false;
     },
 
-    cLastPage: function()
+    isLastPage: function()
     {
-      if (this.currentPage >= this.lastPage)
+      if (this.currentPage >= this.totalPages)
       {
         return true;
       }
       return false;
     },
 
-    cFirstPage: function()
+    isFirstPage: function()
     {
       if (this.currentPage <= this.firstPage)
       {
